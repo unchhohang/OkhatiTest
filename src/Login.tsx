@@ -10,10 +10,14 @@ import {
 } from "@material-ui/core";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { log } from "console";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function Login() {
+export default function Login({
+  setIsLogg,
+}: {
+  setIsLogg: Dispatch<SetStateAction<boolean>>;
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [snackOpen, setSnackOpen] = useState(false);
@@ -23,6 +27,8 @@ export default function Login() {
       ? JSON.parse(localStorage.getItem("cred")!)
       : ""
   );
+
+  console.log("redirect to login");
 
   const history = useHistory();
 
@@ -39,11 +45,9 @@ export default function Login() {
 
   const onsubmit = () => {
     if (email === cred?.email && password === cred?.password) {
-      localStorage.setItem("logIn", "pass");
+      setIsLogg(true);
       history.push("/welcome");
-      console.log("shoul had gone through");
     } else {
-      console.log("why going here");
       setShowErr(true);
     }
   };
